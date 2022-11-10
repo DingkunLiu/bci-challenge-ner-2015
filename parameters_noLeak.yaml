@@ -2,12 +2,15 @@ imports:
   sklearn.linear_model :
     - ElasticNet
   sklearn.preprocessing:
-    - Normalizer
+    - StandardScaler
   classif:
-    - XdawnCovariances
-    - TangentSpace
     - AddMeta
-    - ElectrodeSelect
+  pyriemann.channelselection:
+    - ElectrodeSelection
+  pyriemann.estimation:
+    - XdawnCovariances
+  pyriemann.tangentspace:
+    - TangentSpace
   
 CrossVal:
   cores: 4
@@ -29,18 +32,10 @@ MetaPipeline:
 pipeline:
   - XdawnCovariances:
       nfilter: 5
-      subelec: range(0,56,1)
-  - ElectrodeSelect:
-      nfilters: 5
-      nelec: 35
-      metric: "'riemann'"
   - TangentSpace:
-      metric: "'logeuclid'"
+      metric: "'riemann'"
       tsupdate: False
-  - Normalizer:
-      norm: '"l1"'
-  - AddMeta:
+  - StandardScaler:
   - ElasticNet:
       l1_ratio: 0.5
       alpha: 2e-4
-      normalize: True
